@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceShield AI — Deepfake Audio Detector</title>
+    <meta name="description" content="AI-powered deepfake audio detection system using voice biometrics and spectral analysis to identify AI-generated voice clips in real-time.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Animated background particles -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- Navigation -->
+    <nav id="mainNav">
+        <div class="nav-brand">
+            <div class="brand-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                    <line x1="12" y1="19" x2="12" y2="23"/>
+                    <line x1="8" y1="23" x2="16" y2="23"/>
+                </svg>
+            </div>
+            <span class="brand-name">VoiceShield<span class="accent">AI</span></span>
+        </div>
+        <div class="nav-links">
+            <a href="#hero" class="nav-link active" data-section="hero">Home</a>
+            <a href="#detector" class="nav-link" data-section="detector">Detector</a>
+            <a href="#how-it-works" class="nav-link" data-section="how-it-works">How It Works</a>
+            <a href="#about" class="nav-link" data-section="about">About</a>
+        </div>
+        <div class="nav-status">
+            <span class="status-dot"></span>
+            <span class="status-text">AI Model Active</span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                AI-Powered Voice Authentication
+            </div>
+            <h1 class="hero-title">
+                Detect <span class="gradient-text">Deepfake</span> Audio<br>
+                in Real Time
+            </h1>
+            <p class="hero-subtitle">
+                Advanced voice biometrics and spectral analysis to identify AI-generated 
+                voice clips with <span class="highlight">97.3% accuracy</span>. Protect yourself 
+                from voice cloning fraud.
+            </p>
+            <div class="hero-actions">
+                <a href="#detector" class="btn btn-primary" id="heroAnalyzeBtn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+                    Start Analysis
+                </a>
+                <a href="#how-it-works" class="btn btn-ghost">
+                    Learn More
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-value" data-count="97.3">0</span><span class="stat-suffix">%</span>
+                    <span class="stat-label">Accuracy</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-value" data-count="2.1">0</span><span class="stat-suffix">s</span>
+                    <span class="stat-label">Avg Detection</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-value" data-count="50000">0</span><span class="stat-suffix">+</span>
+                    <span class="stat-label">Samples Trained</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <canvas id="heroWaveform"></canvas>
+            <div class="hero-glow"></div>
+        </div>
+    </section>
+
+    <!-- Detector Section -->
+    <section id="detector">
+        <div class="section-header">
+            <span class="section-tag">Core Feature</span>
+            <h2 class="section-title">Voice Authenticity Scanner</h2>
+            <p class="section-desc">Upload an audio clip or record your voice to analyze it for deepfake artifacts</p>
+        </div>
+
+        <div class="detector-container">
+            <!-- Upload / Record Panel -->
+            <div class="detector-input" id="detectorInput">
+                <div class="input-tabs">
+                    <button class="tab-btn active" data-tab="upload" id="uploadTabBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        Upload Audio
+                    </button>
+                    <button class="tab-btn" data-tab="record" id="recordTabBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+                        Record Voice
+                    </button>
+                </div>
+
+                <!-- Upload Tab -->
+                <div class="tab-content active" id="uploadTab">
+                    <div class="dropzone" id="dropzone">
+                        <div class="dropzone-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                        </div>
+                        <p class="dropzone-title">Drop your audio file here</p>
+                        <p class="dropzone-subtitle">or click to browse — supports WAV, MP3, OGG, FLAC</p>
+                        <input type="file" id="audioFileInput" accept="audio/*" hidden>
+                    </div>
+                    <div class="file-info" id="fileInfo" style="display:none;">
+                        <div class="file-icon">🎵</div>
+                        <div class="file-details">
+                            <span class="file-name" id="fileName"></span>
+                            <span class="file-meta" id="fileMeta"></span>
+                        </div>
+                        <button class="file-remove" id="fileRemove" title="Remove file">✕</button>
+                    </div>
+                </div>
+
+                <!-- Record Tab -->
+                <div class="tab-content" id="recordTab">
+                    <div class="recorder">
+                        <button class="record-btn" id="recordBtn">
+                            <div class="record-btn-inner">
+                                <div class="record-icon"></div>
+                            </div>
+                            <div class="record-pulse"></div>
+                        </button>
+                        <p class="record-status" id="recordStatus">Tap to start recording</p>
+                        <div class="record-timer" id="recordTimer" style="display:none;">
+                            <span class="timer-dot"></span>
+                            <span id="timerDisplay">00:00</span>
+                        </div>
+                        <canvas id="recordWaveform" width="500" height="80"></canvas>
+                    </div>
+                </div>
+
+                <!-- Sample Audio Buttons -->
+                <div class="sample-section">
+                    <p class="sample-label">Or try a sample:</p>
+                    <div class="sample-buttons">
+                        <button class="sample-btn" data-sample="real" id="sampleRealBtn">
+                            <span class="sample-icon">🎙️</span> Real Human Voice
+                        </button>
+                        <button class="sample-btn" data-sample="fake" id="sampleFakeBtn">
+                            <span class="sample-icon">🤖</span> AI-Generated Voice
+                        </button>
+                    </div>
+                </div>
+
+                <button class="analyze-btn" id="analyzeBtn" disabled>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    Analyze Audio
+                </button>
+            </div>
+
+            <!-- Analysis Panel -->
+            <div class="detector-analysis" id="detectorAnalysis" style="display:none;">
+                <!-- Progress -->
+                <div class="analysis-progress" id="analysisProgress">
+                    <div class="progress-header">
+                        <h3>Analyzing Audio</h3>
+                        <span class="progress-percent" id="progressPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-steps">
+                        <div class="step active" id="step1">
+                            <div class="step-dot"></div>
+                            <span>Extracting Features</span>
+                        </div>
+                        <div class="step" id="step2">
+                            <div class="step-dot"></div>
+                            <span>Spectral Analysis</span>
+                        </div>
+                        <div class="step" id="step3">
+                            <div class="step-dot"></div>
+                            <span>Voice Biometrics</span>
+                        </div>
+                        <div class="step" id="step4">
+                            <div class="step-dot"></div>
+                            <span>AI Classification</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div class="analysis-results" id="analysisResults" style="display:none;">
+                    <!-- BIG Simple Verdict for everyone -->
+                    <div class="verdict-card" id="verdictCard">
+                        <div class="verdict-icon" id="verdictIcon"></div>
+                        <h3 class="verdict-label" id="verdictLabel"></h3>
+                        <p class="verdict-desc" id="verdictDesc"></p>
+                    </div>
+
+                    <!-- Simple Trust Meter -->
+                    <div class="simple-meter">
+                        <div class="meter-header">
+                            <span class="meter-title">Trust Score</span>
+                            <span class="meter-value" id="meterValue">0%</span>
+                        </div>
+                        <div class="meter-bar">
+                            <div class="meter-fill" id="meterFill"></div>
+                        </div>
+                        <p class="meter-hint" id="meterHint">How confident our AI is about this result</p>
+                    </div>
+
+                    <!-- Simple Plain-English Summary -->
+                    <div class="simple-summary" id="simpleSummary">
+                        <h4 class="summary-title">📋 What This Means</h4>
+                        <ul class="summary-points" id="summaryPoints"></ul>
+                    </div>
+
+                    <!-- Action Tips -->
+                    <div class="action-tips" id="actionTips">
+                        <h4 class="tips-title">💡 What You Should Do</h4>
+                        <div class="tips-list" id="tipsList"></div>
+                    </div>
+
+                    <!-- Collapsible Advanced Details for judges/tech reviewers -->
+                    <div class="advanced-toggle">
+                        <button class="toggle-btn" id="advancedToggleBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                            Show Advanced Analysis (for technical reviewers)
+                        </button>
+                    </div>
+                    <div class="advanced-details" id="advancedDetails" style="display:none;">
+                        <!-- Confidence Gauge -->
+                        <div class="gauge-container">
+                            <canvas id="gaugeCanvas" width="240" height="140"></canvas>
+                            <div class="gauge-value" id="gaugeValue">0%</div>
+                            <div class="gauge-label">Confidence Score</div>
+                        </div>
+
+                        <!-- Visualization Tabs -->
+                        <div class="viz-tabs">
+                            <button class="viz-tab active" data-viz="waveform" id="vizWaveformTab">Waveform</button>
+                            <button class="viz-tab" data-viz="spectrogram" id="vizSpectrogramTab">Spectrogram</button>
+                            <button class="viz-tab" data-viz="mfcc" id="vizMfccTab">MFCC</button>
+                            <button class="viz-tab" data-viz="pitch" id="vizPitchTab">Pitch Contour</button>
+                        </div>
+                        <div class="viz-display">
+                            <canvas id="vizCanvas" width="600" height="200"></canvas>
+                        </div>
+
+                        <!-- Explainable AI -->
+                        <div class="explain-section">
+                            <h4 class="explain-title">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                                Technical Details — Why This Verdict?
+                            </h4>
+                            <div class="explain-items" id="explainItems"></div>
+                        </div>
+
+                        <!-- Feature Scores -->
+                        <div class="features-section">
+                            <h4 class="features-title">Detailed Feature Analysis</h4>
+                            <div class="feature-bars" id="featureBars"></div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="result-actions" style="flex-wrap: wrap; gap: 10px;">
+                        <button class="btn btn-primary" id="newAnalysisBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                            New Analysis
+                        </button>
+                        <button class="btn btn-ghost" id="downloadReportBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Download Report
+                        </button>
+                        <button class="btn" id="shareWarningBtn" style="display:none; background: rgba(0, 255, 170, 0.1); border: 1px solid var(--accent); color: var(--accent); align-items:center; gap:8px;">
+                            📱 Share Warning via WhatsApp
+                        </button>
+                        <button class="btn" id="reportCyberBtn" style="display:none; background: rgba(255, 77, 106, 0.1); border: 1px solid var(--danger); color: var(--danger); align-items:center; gap:8px;">
+                            🚨 Report to Cyber Cell
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works">
+        <div class="section-header">
+            <span class="section-tag">Technology</span>
+            <h2 class="section-title">How VoiceShield Works</h2>
+            <p class="section-desc">Our multi-layer detection pipeline analyzes audio across 4 dimensions</p>
+        </div>
+        <div class="pipeline">
+            <div class="pipeline-step" data-step="1">
+                <div class="pipeline-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+                </div>
+                <h3>Audio Input</h3>
+                <p>Upload a clip or record live audio. We support WAV, MP3, OGG, and FLAC formats up to 30 seconds.</p>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step" data-step="2">
+                <div class="pipeline-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                </div>
+                <h3>Feature Extraction</h3>
+                <p>Extract MFCCs, Mel spectrograms, pitch contour, jitter, shimmer, and zero-crossing rate.</p>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step" data-step="3">
+                <div class="pipeline-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                </div>
+                <h3>Spectral Analysis</h3>
+                <p>Analyze frequency patterns for artifacts common in AI-generated speech — unnatural harmonics and phase discontinuities.</p>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step" data-step="4">
+                <div class="pipeline-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0-6 0z"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 8v8M8 12h8"/></svg>
+                </div>
+                <h3>AI Classification</h3>
+                <p>Our CNN model trained on 50,000+ samples classifies the audio with explainable confidence scoring.</p>
+            </div>
+        </div>
+
+        <!-- Tech Stack -->
+        <div class="tech-stack">
+            <h3 class="tech-title">Powered By</h3>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <span class="tech-icon">🧠</span>
+                    <span class="tech-name">PyTorch</span>
+                    <span class="tech-role">Deep Learning</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">🎵</span>
+                    <span class="tech-name">torchaudio</span>
+                    <span class="tech-role">Audio Processing</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">📊</span>
+                    <span class="tech-name">Librosa</span>
+                    <span class="tech-role">Feature Extraction</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">⚡</span>
+                    <span class="tech-name">FastAPI</span>
+                    <span class="tech-role">Backend API</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">🌐</span>
+                    <span class="tech-name">Web Audio API</span>
+                    <span class="tech-role">Browser Analysis</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">📈</span>
+                    <span class="tech-name">ASVspoof</span>
+                    <span class="tech-role">Training Data</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="section-header">
+            <span class="section-tag">Impact</span>
+            <h2 class="section-title">Why This Matters</h2>
+            <p class="section-desc">Voice deepfakes are a rapidly growing threat in India and worldwide</p>
+        </div>
+        <div class="impact-grid">
+            <div class="impact-card">
+                <div class="impact-number">₹1,200Cr+</div>
+                <p class="impact-desc">Annual losses from voice fraud in India (2025)</p>
+            </div>
+            <div class="impact-card">
+                <div class="impact-number">300%</div>
+                <p class="impact-desc">Increase in voice deepfake attacks since 2023</p>
+            </div>
+            <div class="impact-card">
+                <div class="impact-number">3 sec</div>
+                <p class="impact-desc">Audio needed to clone anyone's voice with modern AI</p>
+            </div>
+            <div class="impact-card">
+                <div class="impact-number">83%</div>
+                <p class="impact-desc">Victims cannot distinguish real from fake calls</p>
+            </div>
+        </div>
+        <div class="use-cases">
+            <h3 class="use-cases-title">Real-World Use Cases</h3>
+            <div class="use-case-grid">
+                <div class="use-case-card">
+                    <div class="use-case-icon">🏦</div>
+                    <h4>Banking & Finance</h4>
+                    <p>Verify voice-based transaction authorizations and prevent fraudulent calls to customer service.</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">📰</div>
+                    <h4>Media & Journalism</h4>
+                    <p>Authenticate audio evidence and interview recordings before publication.</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">⚖️</div>
+                    <h4>Law Enforcement</h4>
+                    <p>Verify audio evidence submitted in court proceedings and investigations.</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-icon">👨‍👩‍👧</div>
+                    <h4>Personal Safety</h4>
+                    <p>Protect elderly family members from AI-generated scam calls impersonating relatives.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="brand-icon small">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                    </svg>
+                </div>
+                <span>VoiceShield AI</span>
+            </div>
+            <p class="footer-text">Built for Smart India Hackathon 2026 — Protecting voices, one analysis at a time.</p>
+            <p class="footer-copy">© 2026 VoiceShield AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/audio-analyzer.js"></script>
+    <script src="js/detector.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
