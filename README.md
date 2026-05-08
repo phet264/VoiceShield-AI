@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/VoiceShield-AI-00ffaa?style=for-the-badge&logo=soundcloud&logoColor=white" alt="VoiceShield AI" />
+  <img src="https://img.shields.io/badge/VoiceShield-AI-7c5cfc?style=for-the-badge&logo=soundcloud&logoColor=white" alt="VoiceShield AI" />
 </p>
 
-<h1 align="center">🛡️ VoiceShield AI</h1>
+<h1 align="center" style="color: #7c5cfc;">🛡️ VoiceShield AI</h1>
 
 <p align="center">
   <strong>AI-Powered Deepfake Audio Detection System</strong><br/>
@@ -10,29 +10,12 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Accuracy-97.3%25-00ffaa?style=flat-square" alt="Accuracy" />
-  <img src="https://img.shields.io/badge/Detection_Time-2.1s-7c5cfc?style=flat-square" alt="Detection Time" />
+  <img src="https://img.shields.io/badge/Accuracy-97.3%25-7c5cfc?style=flat-square" alt="Accuracy" />
+  <img src="https://img.shields.io/badge/Detection_Time-2.1s-00ffaa?style=flat-square" alt="Detection Time" />
   <img src="https://img.shields.io/badge/Samples_Trained-50%2C000%2B-ff4d6a?style=flat-square" alt="Samples" />
   <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License" />
   <img src="https://img.shields.io/badge/SIH-2026-orange?style=flat-square" alt="Smart India Hackathon" />
 </p>
-
----
-
-## 📋 Table of Contents
-
-- [About](#-about)
-- [The Problem](#-the-problem)
-- [Features](#-features)
-- [How It Works](#-how-it-works)
-- [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [Usage](#-usage)
-- [Use Cases](#-use-cases)
-- [Screenshots](#-screenshots)
-- [Team](#-team)
-- [License](#-license)
 
 ---
 
@@ -123,48 +106,10 @@ VoiceShield AI uses a **multi-layer detection pipeline** that analyzes audio acr
 
 ---
 
-## 📁 Project Structure
+## 🌐 Live Demo
 
-```
-VoiceShield-AI/
-├── index.html                    # Main application page
-├── css/
-│   └── style.css                 # Complete styling (dark theme, glassmorphism)
-├── js/
-│   ├── app.js                    # Main application logic & UI interactions
-│   ├── audio-analyzer.js         # Web Audio API feature extraction
-│   └── detector.js               # Deepfake classification engine
-├── presentation/
-│   └── index.html                # Hackathon presentation slides
-├── VoiceShield_Submission.md     # Hackathon submission document
-├── VoiceShield_PPT_Outline.md    # Presentation outline
-└── README.md                     # You are here!
-```
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- A modern web browser (Chrome, Firefox, Edge, Safari)
-- Microphone access (for live recording feature)
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/phet264/VoiceShield-AI.git
-   cd VoiceShield-AI
-   ```
-
-2. **Open in browser**
-   ```bash
-   # Simply open index.html in your browser
-   # Or use a local server:
-   npx serve .
-   ```
-
-3. **That's it!** The app runs entirely in the browser — no backend setup needed for the prototype.
+You can access the live application here:
+👉 **[Launch VoiceShield AI](https://phet264.github.io/VoiceShield-AI/)**
 
 ---
 
@@ -192,13 +137,13 @@ VoiceShield-AI/
 
 ## 📸 Screenshots
 
-> *Coming soon — The application features a premium dark-mode interface with animated particles, glassmorphism cards, and dynamic waveform visualizations.*
+> *The application features a premium dark-mode interface with animated particles, glassmorphism cards, and dynamic waveform visualizations.*
 
 ---
 
 ## 👥 Team
 
-Built with ❤️ for **Baroda Community Hackathon 2026**
+Built with ❤️ for **Smart India Hackathon 2026**
 
 ---
 
