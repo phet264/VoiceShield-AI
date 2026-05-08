@@ -143,7 +143,7 @@ You can access the live application here:
 
 ## 👥 Team
 
-Built with  for future of tech.
+Built with ❤️ by **Het Patel**, a 3rd-year Diploma IT student, for the future of tech.
 
 ---
 
