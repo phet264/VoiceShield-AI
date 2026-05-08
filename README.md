@@ -143,7 +143,7 @@ You can access the live application here:
 
 ## 👥 Team
 
-Built with ❤️ for **Smart India Hackathon 2026**
+Built with  for future of tech.
 
 ---
 
